@@ -157,6 +157,14 @@ setInterval(function(){
     });
     document.getElementById('message').value = ''
   });
+  window.addEventListener("beforeunload", function () {
+    navigator.sendBeacon(
+        "/leave-room/",
+        JSON.stringify({
+            room: "{{ room }}"
+        })
+    );
+});
 </script>
 
 </html>
