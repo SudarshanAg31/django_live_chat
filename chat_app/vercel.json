@@ -2,14 +2,14 @@
   "version": 2,
   "builds": [
     {
-      "src": "chat_app/chat_app/wsgi.py",
+      "src": "manage.py",
       "use": "@vercel/python"
     }
   ],
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "chat_app/chat_app/wsgi.py"
+      "dest": "chat_app/wsgi.py"
     }
   ]
 }
