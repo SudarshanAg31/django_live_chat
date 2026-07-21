@@ -6,5 +6,6 @@ urlpatterns = [
     path('checkview',views.checkview,name='checkview'),
     path('send',views.send,name='send'),
     path('getmessages/<str:pk>/',views.getmessages,name='getmessages'),
-    path('<str:pk>/',views.room,name='room')
+    path('<str:pk>/',views.room,name='room'),
+    path("leave-room/", views.leave_room, name="leave-room"),
 ]
