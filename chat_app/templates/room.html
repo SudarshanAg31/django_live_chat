@@ -135,7 +135,7 @@ setInterval(function(){
     </form>
 </div>
 
-
+<button id="leave-btn">Leave Room</button>
 </body>
 
 <script type="text/javascript">
@@ -164,6 +164,22 @@ setInterval(function(){
             room: "{{ room }}"
         })
     );
+});
+$("#leave-btn").click(function () {
+
+    fetch("/leave-room/", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRFToken": $('input[name=csrfmiddlewaretoken]').val()
+        },
+        body: JSON.stringify({
+            room: "{{ room }}"
+        })
+    }).then(() => {
+        window.location.href = "/";
+    });
+
 });
 </script>
 
