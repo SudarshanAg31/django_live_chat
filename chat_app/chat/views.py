@@ -32,20 +32,29 @@ def getmessages(request,pk):
     room_details=Room.objects.get(name=pk)
     message=Message.objects.filter(room=room_details.id)
     return JsonResponse({"messages":list(message.values())})
+from django.http import JsonResponse
+import traceback
+
 def leave_room(request):
-    print("LEAVE ROOM CALLED")
-    if request.method == "POST":
-        print(request.body)
+    try:
         data = json.loads(request.body)
+
         room = Room.objects.filter(name=data["room"]).first()
-        print(room)
+
         if room:
             room.users -= 1
+
             if room.users <= 0:
+                print("Deleting messages...")
                 Message.objects.filter(room=str(room.id)).delete()
+
+                print("Deleting room...")
                 room.delete()
-                print("ROOM DELETED")
             else:
                 room.save()
-                print("USER COUNT UPDATED")
+
         return JsonResponse({"status": "success"})
+
+    except Exception as e:
+        print(traceback.format_exc())
+        return JsonResponse({"error": str(e)}, status=500)
