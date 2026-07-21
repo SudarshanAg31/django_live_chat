@@ -33,13 +33,19 @@ def getmessages(request,pk):
     message=Message.objects.filter(room=room_details.id)
     return JsonResponse({"messages":list(message.values())})
 def leave_room(request):
+    print("LEAVE ROOM CALLED")
     if request.method == "POST":
+        print(request.body)
         data = json.loads(request.body)
-        room = Room.objects.get(name=data["room"]).first()
+        room = Room.objects.filter(name=data["room"]).first()
+        print(room)
         if room:
             room.users -= 1
             if room.users <= 0:
+                Message.objects.filter(room=str(room.id)).delete()
                 room.delete()
-        else:
-            room.save()
-    return JsonResponse({"status": "success"})
+                print("ROOM DELETED")
+            else:
+                room.save()
+                print("USER COUNT UPDATED")
+        return JsonResponse({"status": "success"})
